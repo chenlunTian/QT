@@ -14,61 +14,72 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,3">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
+     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,3">
       <item>
-       <widget class="QPlainTextEdit" name="plainTextEdit">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="plainText">
-         <string>1、右击显示菜单，[全显]按钮可自动调整坐标轴范围，使之显示出所有曲线。
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPlainTextEdit" name="plainTextEdit">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="plainText">
+           <string>1、右击显示菜单，[全显]按钮可自动调整坐标轴范围，使之显示出所有曲线。
 2、滚轮按住，可自由拖动；滚轮滚动，可放大、缩小
 3、左键单击，可显示坐标点
 4、左键按住画框，可放大框选区（不要在自动滚动时使用此功能，请读者自己想想为什么）
 5、可设置自动滚动，可设置游标
 </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QCheckBox" name="checkBox_scroll">
-          <property name="text">
-           <string>启用自动滚动</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox_tracer">
-          <property name="text">
-           <string>启用游标</string>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QCheckBox" name="checkBox_scroll">
+            <property name="text">
+             <string>启用自动滚动</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_tracer">
+            <property name="text">
+             <string>启用游标</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="SettingBtn">
+            <property name="text">
+             <string>设置</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="3,1">
       <item>
-       <layout class="QHBoxLayout" name="wave">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="btn" stretch="">
-        <property name="spacing">
-         <number>6</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="3,1">
+        <item>
+         <layout class="QHBoxLayout" name="wave">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="btn">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+         </layout>
+        </item>
        </layout>
       </item>
      </layout>

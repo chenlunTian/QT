@@ -11,6 +11,8 @@ QCustomplot的绘图机制：每条曲线都要绘制在一个单独的graph中
 #include <QMouseEvent>
 #include <QMap>
 #include <qdebug.h>
+#include "settingdialog.h"
+
 typedef struct _CurveData
 {
     QVector<double> keyVec;//x
@@ -31,9 +33,10 @@ public:
     ~MultiCurvesPlot(){qDebug() << "delete MultiCurvesPlot";}
 
     void setCurvesName(QVector<QString> _nameVec);
-    void addData(int curveIdx, double x, double y);
+    void addData(int curveIdx, double* x, double y);
     void setAutoScroll(bool enable){autoScroll = enable;}
     void setDiffSolveEnable(bool enable);
+    void setAllCurveName();
     void setColors(QVector<QColor> _colors);
     void setMainPlot(QCustomPlot *_mainPlot);
     void setTracerEnable(bool enable);//是否使能游标
@@ -50,7 +53,6 @@ public slots:
 
 signals:
     void noniusValueChanged(int _curveIdx, QString val);//游标值变化了
-
 
 
 protected:
@@ -107,6 +109,7 @@ private:
     QCPRange Xscope;//记录X轴的范围
     QCPRange Yscope;//记录Y轴的范围
 
+    double* Xsize;//记录X轴数据
     void setLegendPosition();
 
 };

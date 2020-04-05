@@ -4,11 +4,6 @@
 #include <QRegExp>
 #include <qDebug>
 
-
-
-
-
-
 Widgets::Widgets(QWidget *parent):QWidget(parent)
 {
     //this->resize(232, 27);

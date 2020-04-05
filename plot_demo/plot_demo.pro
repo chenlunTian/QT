@@ -25,14 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
-    multicurvesplot.cpp \
-    qcustomplot.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    multicurvesplot.h \
-    qcustomplot.h
+        mainwindow.h
 
 FORMS += \
         mainwindow.ui

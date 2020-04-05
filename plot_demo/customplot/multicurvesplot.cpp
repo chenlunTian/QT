@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QColorDialog>
 
-
 #pragma execution_character_set("utf-8")
 
 MultiCurvesPlot::MultiCurvesPlot(int _curvesCnt, QWidget *parent):
@@ -24,18 +23,22 @@ MultiCurvesPlot::MultiCurvesPlot(int _curvesCnt, QWidget *parent):
 
     /*设置图例位置*/
     this->legend->setVisible(true);//使能图例
-//    this->axisRect()->insetLayout()->setInsetAlignment(0,Qt::AlignLeft|Qt::AlignTop);//设置图例的位置
-    setLegendPosition();
+    this->legend->setBrush(QColor(255,255,255,0));//设置图例背景透明
+    this->axisRect()->insetLayout()->setInsetAlignment(0,Qt::AlignLeft|Qt::AlignTop);//设置图例的位置
+//    setLegendPosition();
      /*设置OpenGl*/
 //    this->setOpenGl(true);
 //    qDebug() << "QCustomplot opengl status = " << this->openGl();
     this->yAxis2->setVisible(true);
     connect(yAxis, SIGNAL(rangeChanged(QCPRange)), yAxis2, SLOT(setRange(QCPRange)));//左右y轴同步放缩
 
-    QSharedPointer<QCPAxisTickerDateTime> dateTicker(new QCPAxisTickerDateTime);//日期做X轴
-    dateTicker->setDateTimeFormat("hh:mm:ss.zzz");//日期格式(可参考QDateTime::fromString()函数)
-    //QDateTime::fromString("");
-    this->xAxis->setTicker(dateTicker);//设置X轴为时间轴
+//时间做X轴
+//    QSharedPointer<QCPAxisTickerDateTime> dateTicker(new QCPAxisTickerDateTime);//日期做X轴
+//    dateTicker->setDateTimeFormat("hh:mm:ss.zzz");//日期格式(可参考QDateTime::fromString()函数)
+//    //QDateTime::fromString("");
+//    this->xAxis->setTicker(dateTicker);//设置X轴为时间轴
+//数据点做X轴
+    this->xAxis->setRange(0,1000);
     this->xAxis->setTickLabels(true);//显示刻度标签
 
     /*显示数值的提示框*/
@@ -182,7 +185,7 @@ void MultiCurvesPlot::showCurves(QList<uint16_t> _idxList)
     else
         traceGraph = NULL;
 //    showAllGraph();
-    setLegendPosition();
+//    setLegendPosition();
     this->replot();
 }
 
@@ -238,7 +241,7 @@ double x = (double)(QDateTime::currentMSecsSinceEpoch()) / 1000.0;//当前时间
 double y = qSin(x);
 plot->addData(idx, x, y);
 */
-void MultiCurvesPlot::addData(int idx, double x, double y)
+void MultiCurvesPlot::addData(int idx, double* x, double y)
 {
     if(idx > allCurvesData.size())
     {
@@ -247,8 +250,9 @@ void MultiCurvesPlot::addData(int idx, double x, double y)
     }
     if(y > 1e10 || y < -1e10)//接收到的异常值直接不绘制
         return;
+    Xsize=x;  //记录x轴数据
 
-    allCurvesData[idx].keyVec.append(x);//备份数据源
+    allCurvesData[idx].keyVec.append(*x);//备份数据源
     allCurvesData[idx].valVec.append(y);
 
 //    qDebug() << "allCurvesData.keyVec"<<idx<<allCurvesData[idx].keyVec;
@@ -257,7 +261,7 @@ void MultiCurvesPlot::addData(int idx, double x, double y)
     if(curveIdx2graphPtr.contains(idx))//第idx个曲线正在显示中
     {
         QCPGraph* pGraph = curveIdx2graphPtr[idx];
-        pGraph->addData(x, y);
+        pGraph->addData(*x, y);
         pGraph->data().data()->removeBefore(0);
     }
 
@@ -290,17 +294,21 @@ void MultiCurvesPlot::clearAllData()
         allCurvesData[idx].keyVec.clear();
         allCurvesData[idx].valVec.clear();
     }
+    *Xsize=0;
 }
 
 void MultiCurvesPlot::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
-//    setLegendPosition();
     if(autoScroll)
     {
-        double curSeclf = (double)(QDateTime::currentMSecsSinceEpoch()) / 1000.0;
-        this->xAxis->setRange(curSeclf - xAxis->range().size(), curSeclf);
-//        qDebug()<<"xAxis->range().size()"<<xAxis->range().size();
+//        //时间做X轴时
+//        double curSeclf = (double)(QDateTime::currentMSecsSinceEpoch()) / 1000.0;
+//        this->xAxis->setRange(curSeclf - xAxis->range().size(), curSeclf);
+        //数据点做X轴时
+    if(*Xsize-xAxis->range().size()>=0)
+        this->xAxis->setRange(*Xsize - xAxis->range().size(), *Xsize);
+        qDebug()<<"xAxis->range().size()"<<xAxis->range().size();
     }
 
     this->replot();
@@ -372,14 +380,7 @@ void MultiCurvesPlot::mouseReleaseEvent(QMouseEvent *event)
         arrow->setVisible(false);
     }
 }
-//void MultiCurvesPlot::keyPressEvent(QKeyEvent *event)
-//{
-//    QCustomPlot::keyPressEvent(event);
-//}
-//void MultiCurvesPlot::keyReleaseEvent(QKeyEvent *event)
-//{
-//    QCustomPlot::keyReleaseEvent(event);
-//}
+
 void MultiCurvesPlot::setColors(QVector<QColor> _colorsIn)
 {
     if(_colorsIn.size() != getColor.size())
@@ -520,4 +521,10 @@ void MultiCurvesPlot::setLegendPosition()
     this->legend->setBorderPen(Qt::NoPen);
     this->plotLayout()->addElement(1,0,this->legend);
     this->plotLayout()->setRowStretchFactor(1, 0.001);
+}
+
+void MultiCurvesPlot::setAllCurveName()
+{
+
+
 }
