@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QRegExp>
 #include <qDebug>
+#include "flatui/flatui.h"
 
 Widgets::Widgets(QWidget *parent):QWidget(parent)
 {
@@ -27,6 +28,10 @@ Widgets::Widgets(QWidget *parent):QWidget(parent)
     checkBox->setMaximumWidth(100);
     lineEdit->setMinimumWidth(50);
 
+    FlatUI::Instance()->setCheckBoxQss(checkBox);
+    FlatUI::Instance()->setLineEditQss(lineEdit);
+
+
 }
 
 
@@ -41,8 +46,13 @@ CheckBoxUiList::CheckBoxUiList(QWidget *parent) :
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), this, SLOT(timer_timeout()));
 //    setMouseTracking(true);//未按下鼠标时，也会触发mouseMove事件
-
+    FlatUI::Instance()->setLineEditQss(ui->regExpInput,2,1);
+    FlatUI::Instance()->setPushButtonQss(ui->btnSelectAll);
+    FlatUI::Instance()->setPushButtonQss(ui->btnSelectNone);
+    FlatUI::Instance()->setCheckBoxQss(ui->showTipFlag);
+    FlatUI::Instance()->setCheckBoxQss(ui->regExpEnable);
     init(10);
+
 }
 void CheckBoxUiList::init(int cnt)
 {
@@ -60,6 +70,7 @@ void CheckBoxUiList::init(int cnt)
         connect(itemWdt->checkBox, SIGNAL(stateChanged(int)), this, SLOT(anyStateChanged()));
     }
     allCheckboxsConnect(true);
+
 }
 
 CheckBoxUiList::~CheckBoxUiList()

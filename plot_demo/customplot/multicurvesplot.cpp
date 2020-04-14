@@ -38,7 +38,7 @@ MultiCurvesPlot::MultiCurvesPlot(int _curvesCnt, QWidget *parent):
 //    //QDateTime::fromString("");
 //    this->xAxis->setTicker(dateTicker);//设置X轴为时间轴
 //数据点做X轴
-    this->xAxis->setRange(0,1000);
+    this->xAxis->setRange(-10,1000);
     this->xAxis->setTickLabels(true);//显示刻度标签
 
     /*显示数值的提示框*/
@@ -137,6 +137,9 @@ MultiCurvesPlot::MultiCurvesPlot(int _curvesCnt, QWidget *parent):
         allCurvesData[i].keyVec.clear();
         allCurvesData[i].valVec.clear();
     }
+
+//  保存当前坐标轴的范围
+    storeAxisScope(1,0);  //保存当前坐标轴的范围
     startTimer(30, Qt::CoarseTimer);//定频刷新曲线图
 }
 
@@ -176,6 +179,7 @@ void MultiCurvesPlot::showCurves(QList<uint16_t> _idxList)
         pGraph->setPen(QPen(getColor[curveIdx]));//线的颜色随机
 //        pGraph->setLineStyle(QCPGraph::lsStepLeft);//阶梯线样式
         pGraph->setLineStyle(QCPGraph::lsLine);//直接连线样式
+//        pGraph->setLineStyle(QCPGraph::lsStepCenter);//阶梯线样式
         //this->graph(graphIdx)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 3));//显示散点
         this->graph(graphIdx)->setName(getName[curveIdx]);
         graphIdx++;
@@ -185,7 +189,8 @@ void MultiCurvesPlot::showCurves(QList<uint16_t> _idxList)
     else
         traceGraph = NULL;
 //    showAllGraph();
-//    setLegendPosition();
+    yAxis->rescale(true);
+
     this->replot();
 }
 
@@ -295,6 +300,7 @@ void MultiCurvesPlot::clearAllData()
         allCurvesData[idx].valVec.clear();
     }
     *Xsize=0;
+    resumeAxisScope(1,0);//恢复坐标轴的范围
 }
 
 void MultiCurvesPlot::timerEvent(QTimerEvent *event)

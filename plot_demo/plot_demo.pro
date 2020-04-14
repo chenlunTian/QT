@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = plot_demo
 TEMPLATE = app
@@ -33,9 +33,6 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
-DEFINES += QCUSTOMPLOT_USE_OPENGL
-
-LIBS += -lopengl32 -lglu32
-
 include (./checkboxuilist/checkboxuilist.pri)
 include (./customplot/customplot.pri)
+include (./flatui/flatui.pri)

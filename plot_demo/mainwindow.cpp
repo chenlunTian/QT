@@ -14,8 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     plot  = new MultiCurvesPlot(CURVE_CNT, this);
     ui->wave->addWidget(plot);  //放进布局中使用addWidget(plot)放进去就能直接自动调整大小
     plot->yAxis->setRange(-2.5, 2.5);//设置Y轴的范围
+    on_setCheckBoxText_clicked(0);
     on_setCheckBoxText_clicked(1);
-    connect(plot,SLOT(valueChanged()),this,SLOT(setValue()));
+    this->setStyleSheet("*{outline:0px;}QWidget#MainWindow{background:#ffffff;}");
     this->startTimer(20);//启动定时器，用于生成模拟点
 }
 
